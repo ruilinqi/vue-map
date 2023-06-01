@@ -1,6 +1,7 @@
-# map-project
+# vue-map-project
 
-> A Vue.js project
+> A web page that enables users to acquire their current location, search for specific locations, and manage the searched places using a table with pagination. It is built using Vue.js and Semantic UI.
+
 
 ## Build Setup
 
@@ -18,5 +19,7 @@ npm run build
 npm run build --report
 ```
 
+⚡Change [API_KEY] to your actual Google API Key
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-# vue-map
+
