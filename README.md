@@ -21,5 +21,9 @@ npm run build --report
 
 ⚡Please change [API_KEY] to your actual Google API Key
 
+## Final Product
+!["Screenshot of main page"](https://github.com/ruilinqi/vue-map/blob/master/docs/map_page.PNG)
+
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
