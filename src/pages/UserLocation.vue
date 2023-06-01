@@ -10,6 +10,11 @@
       </div>
       <button class="ui button sui-button blue" @click="searchLocation">Search</button>
     </div>
+    <div class="timezone-container" v-if="selectedPlace">
+      <!-- Display time zone and local time -->
+      <h3>Time Zone: {{ selectedPlace.timezone }}</h3>
+      <h3>Local Time: {{ localTime }}</h3>
+    </div>
     <div class="map-container">
       <section id="map" ref="map"></section>
     </div>
@@ -73,6 +78,7 @@ export default {
       }
     },
 
+    // Initialize map
     initializeMap() {
       this.map = new google.maps.Map(this.$refs.map, {
         zoom: 15,
@@ -81,11 +87,12 @@ export default {
       });
     },
 
+    // Auto complete the location
     initializeAutocomplete() {
       const autocomplete = new google.maps.places.Autocomplete(this.$refs.autocompleteInput, {
         types: ["geocode"],
       });
-
+      // Listen for place changes in the Autocomplete
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
         if (place && place.geometry && place.geometry.location) {
@@ -114,7 +121,7 @@ export default {
       }
 
       const query = encodeURIComponent(this.searchTerm);
-      const apiKey = "[API KEY]"; // Replace with your Google Maps API key
+      const apiKey = "[API_KEY]"; // Replace with your Google Maps API key
 
       const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${apiKey}`;
 
@@ -126,9 +133,40 @@ export default {
           this.searchedPlaces.forEach((place) => {
             this.addMarker(place);
           });
+          if (this.searchedPlaces.length > 0) {
+            this.selectedPlace = this.searchedPlaces[0];
+            this.getLocalTime(this.selectedPlace);
+          } else {
+            this.selectedPlace = null;
+            this.localTime = null;
+          }
         })
         .catch((error) => {
           console.error(error);
+        });
+    },
+
+    getLocalTime(place) {
+      // Calculate local time using the Google Time Zone API
+      const timestamp = Date.now() / 1000;
+      axios
+        .get(
+          `https://maps.googleapis.com/maps/api/timezone/json?location=${place.geometry.location.lat},${place.geometry.location.lng}&timestamp=${timestamp}&key=[API_KEY]`
+        )
+        .then((response) => {
+          const timeZoneId = response.data.timeZoneId;
+          const rawOffset = response.data.rawOffset;
+          const dstOffset = response.data.dstOffset;
+
+          const localTimestamp = timestamp + rawOffset + dstOffset;
+
+          const localDateTime = new Date(localTimestamp * 1000);
+          const options = { timeZone: timeZoneId, timeStyle: "medium", dateStyle: "medium" };
+          this.localTime = localDateTime.toLocaleString(undefined, options);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.localTime = null;
         });
     },
 
