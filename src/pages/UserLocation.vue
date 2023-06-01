@@ -121,7 +121,7 @@ export default {
       }
 
       const query = encodeURIComponent(this.searchTerm);
-      const apiKey = "[API_KEY]"; // Replace with your Google Maps API key
+      const apiKey = "AIzaSyD-c5s2F9mo2zH8ycJ2AD5A3rvhhx3LXs4"; // Replace with your Google Maps API key
 
       const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${apiKey}`;
 
@@ -151,7 +151,7 @@ export default {
       const timestamp = Date.now() / 1000;
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/timezone/json?location=${place.geometry.location.lat},${place.geometry.location.lng}&timestamp=${timestamp}&key=[API_KEY]`
+          `https://maps.googleapis.com/maps/api/timezone/json?location=${place.geometry.location.lat},${place.geometry.location.lng}&timestamp=${timestamp}&key=AIzaSyD-c5s2F9mo2zH8ycJ2AD5A3rvhhx3LXs4`
         )
         .then((response) => {
           const timeZoneId = response.data.timeZoneId;
